@@ -46,6 +46,24 @@ table {
 	border-spacing: 0;
 }
 
+sup,
+sub {
+    height: 0;
+    line-height: 1;
+    vertical-align: baseline;
+    _vertical-align: bottom;
+    position: relative;
+
+}
+
+sup {
+    bottom: 1ex;
+}
+
+sub {
+    top: .5ex;
+}
+
 /* LAYOUT STYLES */
 body {
   font-size: 16px;
@@ -218,15 +236,17 @@ em {
 
 table {
   width: 100%;
-  border: 1px solid #ebebeb;
+  border: 1px solid #777;
+  margin-bottom:2em;
 }
 
 th {
   font-weight: 500;
+  background:#ccc;
 }
 
 td {
-  border: 1px solid #ebebeb;
+  border: 1px solid #777;
   text-align: center; 
   font-weight: 300;
 }
