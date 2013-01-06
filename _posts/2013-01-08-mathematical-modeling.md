@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Contact Engine Math
+title: How to Model a Problem (with Math!)
 ---
 
 {{ page.title }}
