@@ -3,12 +3,14 @@ layout: default
 title: Pete Michaud
 ---
 
-<div id="home">
+<div id="home" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     <ul class="posts">
         {% for post in site.posts %}
         <li>
             <span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a>
-            {{ post.content | strip_html | truncatewords: 50 }}
+            {% capture excerpt %}{{ post.content | split:</p> }}{% endcapture %}
+            {% excerpt[0] = '' %}
+            <div>{{ excerpt | join:</p> | strip_html | truncatewords: 50 }}</div>
         </li>
         {% endfor %}
     </ul>
