@@ -337,6 +337,21 @@ footer a:hover {
 * html .clearfix {height: 1%;}
 .clearfix {display: block;}
 
+ul.posts {
+    list-style: none;
+    margin-bottom:2em;
+}
+
+ul.posts li {
+    line-height: 1.75em;
+}
+
+ul.posts span {
+    color:#777;
+    font-size:0.8em;
+    font-family: Monaco, "Courier New", monospace;
+}
+
 /* #Media Queries
 ================================================== */
 
