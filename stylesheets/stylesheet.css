@@ -338,12 +338,13 @@ footer a:hover {
 .clearfix {display: block;}
 
 ul.posts {
-    list-style: none;
+    list-style-type:none;
     margin-bottom:2em;
 }
 
 ul.posts li {
     line-height: 1.75em;
+    list-style:none;
 }
 
 ul.posts span {
