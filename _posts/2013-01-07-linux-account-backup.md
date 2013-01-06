@@ -8,7 +8,7 @@ title: Linux Hosting Account Backup
 
 <p class="meta">January 7th, 2013</p>
 
-If you’re on a linux host, you might find this useful. It will backup all the websites for a given user on the host into
+If you’re on a linux host, you might find this useful. It will backup all the websites and their MySQL databases into
 an archive folder that you can download regularly. This script runs weekly on my host, and backs up my dozen or so sites
 and databases. You’ll need a shell user probably, and the ability to set up CRON jobs.
 
