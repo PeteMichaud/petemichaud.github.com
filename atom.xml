@@ -17,9 +17,9 @@ layout: nil
     {% for post in site.posts %}
     <entry>
         <title>{{ post.title }}</title>
-        <link href="http://petemichaud.github.com{{ post.url }}"/>
+        <link href="{{ site.root_url }}{{ post.url }}"/>
         <updated>{{ post.date | date_to_xmlschema }}</updated>
-        <id>http://petemichaud.github.com/{{ post.id }}</id>
+        <id>{{ site.root_url }}{{ post.id }}</id>
         <content type="html">{{ post.content | xml_escape }}</content>
     </entry>
     {% endfor %}
