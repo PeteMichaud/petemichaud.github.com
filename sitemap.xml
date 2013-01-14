@@ -7,7 +7,7 @@ layout: nil
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
     <url>
         <loc>{{ site.root_url }}/index.html</loc>
-        <lastmod>{{ site.time }}</lastmod>
+        <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
