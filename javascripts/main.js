@@ -10,5 +10,6 @@ $(document).ready(function(){
             .text($btn.data('toggle-anchor'))
             .data('toggle-anchor', current_text);
 
+        return false;
    });
 });
