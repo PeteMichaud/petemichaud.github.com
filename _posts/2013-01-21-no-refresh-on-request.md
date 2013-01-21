@@ -151,7 +151,7 @@ $(document).noRefreshError(function(e){
 });
 {% endhighlight %}
 
-Which would pretty readily be capsulated as something like:
+Which would pretty readily be encapsulated as something like:
 
 {% highlight javascript %}
 $(document[uri=this_url]).noRefreshError(function(e){
