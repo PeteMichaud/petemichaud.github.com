@@ -148,9 +148,11 @@ fitted to an exponential curve, which yielded:
 That gives us a range of 36 to 10,032 hours which is workable. To give some play, I added an adjustment term that lets
 us set the bottom end anywhere from 1 hour to the full 36 hours. Here's the code:
 
-    def contact_frequency_in_hours intimacy, adjustment = 24
-      (35.728 * Math::E ** (0.0564 * (100 - intimacy))).round - adjustment
-    end
+{% highlight ruby %}
+def contact_frequency_in_hours intimacy, adjustment = 24
+  (35.728 * Math::E ** (0.0564 * (100 - intimacy))).round - adjustment
+end
+{% endhighlight %}
 
 This function will tell you that you should get in touch with your wife every 12 hours, and your annoying cousin every
 14 months or so.
@@ -355,8 +357,10 @@ right.
 
 So it appears that I need to use the amplitude modifer as the frequency modifier in that term above, i.e.:
 
+{% highlight ruby %}
     frequency_modifier / (amplitude_modifier * 2) ==
     amplitude_modifier / (amplitude_modifier * 2)
+{% endhighlight %}
 
 Which of course is always going to be 0.5. So I hard coded it:
 
@@ -364,12 +368,14 @@ Which of course is always going to be 0.5. So I hard coded it:
 
 Finally, here's the code:
 
-    def contact_impact intimacy, number_of_previous_contacts
-      a_mod = amplitude_modifier intimacy
-      #f_mod = a_mod
+{% highlight ruby %}
+def contact_impact intimacy, number_of_previous_contacts
+  a_mod = amplitude_modifier intimacy
+  #f_mod = a_mod
 
-      a_mod * (2 / Math::PI) * (Math.acos(Math.cos(Math::PI * number_of_previous_contacts * 0.5)))
-    end
+  a_mod * (2 / Math::PI) * (Math.acos(Math.cos(Math::PI * number_of_previous_contacts * 0.5)))
+end
+{% endhighlight %}
 
 ### Amplitude Modifer
 
@@ -417,31 +423,37 @@ we'll use 2 instead:
 
 The code:
 
-    def amplitude_modifier intimacy
-      inflection_point = 25
-      max_amplitude = 4.5
-      min_amplitude = 2.5
-      range_size = max_amplitude - min_amplitude
+{% highlight ruby %}
+def amplitude_modifier intimacy
+  inflection_point = 25
+  max_amplitude = 4.5
+  min_amplitude = 2.5
+  range_size = max_amplitude - min_amplitude
 
-      a_mod = ((1 / (1 + 2 ** (-intimacy + inflection_point))) * range_size) + min_amplitude
+  a_mod = ((1 / (1 + 2 ** (-intimacy + inflection_point))) * range_size) + min_amplitude
 
-      # The only sensible values for contact_impact to return are integers, so the amplitude needs to return something
-      # rounded to the nearest .5 (since the function multiplies the amplitude_modifier by 2)
-      (a_mod * 2).round / 2.to_f
-    end
+  # The only sensible values for contact_impact to return are integers, so the amplitude needs to return something
+  # rounded to the nearest .5 (since the function multiplies the amplitude_modifier by 2)
+  (a_mod * 2).round / 2.to_f
+end
+{% endhighlight %}
 
 ## Putting it all together
 
 Ok, so back to Earth. We want to know when and how to contact Aunt Betty. Here's a method:
 
-    # returns the next time contact should take place, and what type of contact it should be
-    def next_contact intimacy, number_of_previous_contacts
-      impact = contact_impact(intimacy, number_of_previous_contacts)
-      return contact_frequency_in_hours(intimacy), get_contact_method_from_impact(impact)
-    end
+{% highlight ruby %}
+# returns the next time contact should take place, and what type of contact it should be
+def next_contact intimacy, number_of_previous_contacts
+  impact = contact_impact(intimacy, number_of_previous_contacts)
+  return contact_frequency_in_hours(intimacy), get_contact_method_from_impact(impact)
+end
+{% endhighlight %}
 
 So if we have an intimacy of 75 with Aunt Sue, and we've never been in touch:
 
+{% highlight ruby %}
     next_contact(75,0) #=>  122, :facebook_message
+{% endhighlight %}
 
 In a little over 5 days, we should send Aunt Sue a facebook message. That wasn't so hard.
