@@ -1,8 +1,8 @@
 $(document).ready(function(){
     var $btn = $('.full-toggle-btn');
-
+    var $full = $('.summary, .experience ul, .education > p');
     $btn.click(function(){
-       $('.summary, .experience ul, .education > p').slideToggle('fast');
+       $full.slideToggle('fast');
 
         var current_text = $btn.text();
 
