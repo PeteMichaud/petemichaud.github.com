@@ -18,7 +18,7 @@ I was born to be a "social good startup guy," and I hope to always be this naive
 like the obvious choice, but I've put a great deal of thought into what a modern social good startup might look like,
 and the traditional models trouble me. Still, I'm left with questions.
 
-# Problems with the Traditional Model
+## Problems with the Traditional Model
 
 Traditional not-for-profits operate basically like so:
 
@@ -31,7 +31,7 @@ and clothing with the remaining 90% of the money.
 
 That's the theory anyway.
 
-## Misaligned Incentives
+### Misaligned Incentives
 
 The reality is that many "charities" use the vast majority of their money on "operating
 expenses" (read: enriching themselves). Even the many not-for-profits that try in earnest to spend as much as possible
@@ -40,7 +40,7 @@ on their mission feel the pinch of the dynamic between operating effectively as 
 It's a toxic pattern in which growth is both good for the mission and terrible for the mission, and there's
 ambiguity about just where the line is between overhead expense and positive returns on scale.
 
-## Sustainability
+### Sustainability
 
 Even the world class organizations who successfully strike the balance between operational costs and giving, are in an
 unsustainable situation. Their model isn't a machine that propels itself forward by intertia, with each part of the
@@ -48,14 +48,14 @@ machine supporting and driving the other parts forward in an upward spiral. Inst
 resources it can't economically justify having, then it gives those resources away, only to repeat the cycle. No matter
 how much good they do, it doesn't help them sustain their own existence.
 
-## Emotional Bias
+### Emotional Bias
 
 The model also requires that the cause pull the appropriate heart strings either of the individual donors or of the
 intended audience for the PR department of the institutional donor. That works sometimes, but breast cancer research is
 funded far out of proportion to the risk is poses and the structural problems in our world economy are complex and
 unsexy and they need to be solved too.
 
-# A Better Model: Implicit Good
+## A Better Model: Implicit Good
 
 The whole idea of capitalism is that people can trade bread and wool in a way that benefits them both. There's an
 **implicit good** in the transaction because both parties end up warmer and fuller than they were before.
@@ -77,7 +77,7 @@ world who are getting pinched by lack of local demand or by fat middle men. When
 market by paying directly to the farmer, the company pays less or the same, and the farmer makes more. It's a
 sustainable transaction that carries an implicit good for all parties.
 
-## Easier Said
+### Easier Said
 
 I think figuring out clever ways for previously impoverished people to participate meaningfully in the economy is the
 ideal, but it's easy to say that and titanically difficult to make happen. There's a reason the euphemism for these
@@ -87,7 +87,7 @@ meaningfully participate in an increasingly complex economy.
 As we explore alternatives, I think it's worth bearing in mind that this would be ideal, at those times when it turns
 out to be feasible.
 
-## Commons
+### Commons
 
 I should also mention that there's a different use for not-for-profits that's not about disadvantaged individuals.
 
@@ -113,7 +113,7 @@ When that's not the possible, the idea goes, the government can warp the market 
 that's advantageous to everyone overall. I could hear a rimshot in my head when I wrote that. It's worth mentioning the
 possibility of a helpful government, but it's not practical to consider on the scale of startups.
 
-# Alternative: Positive Externalities
+## Alternative: Positive Externalities
 
 The tragedies of the commons and disadvantaged individual have the same potential solution.
 
