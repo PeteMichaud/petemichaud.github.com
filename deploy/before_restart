@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+oldrev, newrev = ARGV
+
+def run(cmd)
+  exit($?.exitstatus) unless system "umask 002 && #{cmd}"
+end
+
+run "jekyll --source /jekyll/#{File.dirname(__FILE__)} --destination /var/www/#{File.dirname(__FILE__)}/public_html"
