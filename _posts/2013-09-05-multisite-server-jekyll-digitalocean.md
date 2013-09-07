@@ -475,6 +475,12 @@ tmp_dir = "/tmp/jekyll/"
 web_dir = "/var/www/"
 output = ""
 
+puts "Process ID: #{Process.pid}"
+
+ get '/' do
+   'OK'
+ end
+
  post '/' do
   payload = JSON.parse(params[:payload])
   site_name = payload["repository"]["name"]
@@ -527,11 +533,6 @@ $ ruby /var/www/git.mysite.com/githook.rb
 {% endhighlight %}
 
 You'll see the session attach to a Thin server process. Success.
-
-> Note: Visiting git.mysite.com in your browser will still give a 502 error. Why? Because our dead-simple Sinatra app
-> only listens for POST requests to '/', and when you tried to go there in the browser you sent it a GET request. So
-> nginx passed the request to Sinatra, and Sinatra told nginx "I don't know what to do with this," so nginx told your
-> browser "Stop messing around, knucklehead."
 
 ## Github
 
