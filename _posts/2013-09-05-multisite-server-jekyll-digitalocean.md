@@ -495,6 +495,10 @@ puts "Process ID: #{Process.pid}"
     output += `#{new_server_block_cmd}`
   end
 
+  if File.exists?('Gemfile')
+    `bundle`
+  end
+
   build_cmd = "jekyll build --source #{tmp_dir}#{site_name} --destination #{web_dir}#{site_name}/public_html"
 
   output += "\n\nBuilding from source using Jekyll\n\n"
