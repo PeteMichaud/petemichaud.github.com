@@ -265,7 +265,7 @@ WEB_USER='www-data'
 # Create nginx config file
 cat > $NGINX_AVAILABLE_VHOSTS/$1 <<EOF
 server {
-  server_name $1;
+  server_name $1 www.$1;
   listen 80;
   root $WEB_DIR/$1/public_html;
   access_log $WEB_DIR/$1/logs/access.log;
