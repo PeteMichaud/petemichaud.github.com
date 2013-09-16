@@ -495,8 +495,9 @@ puts "Process ID: #{Process.pid}"
     output += `#{new_server_block_cmd}`
   end
 
-  if File.exists?('Gemfile')
-    `bundle`
+  if File.exists?("#{tmp_dir}#{site_name}/Gemfile")
+    output += "\n\nBundling Gems\n"
+    output += `pushd #{tmp_dir}#{site_name}; bundle; popd;`
   end
 
   build_cmd = "jekyll build --source #{tmp_dir}#{site_name} --destination #{web_dir}#{site_name}/public_html"
