@@ -184,10 +184,10 @@ This method sacrifices some page speed because it requires the server return eve
 requires a new diff operation between the current DOM and the new DOM instead of manual insertion of the changed
 elements.
 
-Benchmarks would have to be performed, but I suspect the extra load would be negligable, especially
+Benchmarks would have to be performed, but I suspect the extra load would be negligible, especially
 considering the browser-level optimizations that become possible.
 
-You also save programmer cycles because you eliminate fairly large and generally flakey areas of code from all web
+You also save programmer cycles because you eliminate fairly large and generally flaky areas of code from all web
 applications that use this technology.
 
 ## Conclusion
@@ -199,5 +199,5 @@ JavaScript requests and execution.
 
 It's also possible to shim this behavior. The most difficult part of both the browser and shim implementations will be
 the diff and injection portions, but both are very doable. I'm looking for feedback on the idea, and once I have a
-robust concept, I can write the shim a a Proof of Concept. Then in only 20 or 30 years of commitee approvals, we can
-have full browser adpotion!
+robust concept, I can write the shim a a Proof of Concept. Then in only 20 or 30 years of committee approvals, we can
+have full browser adoption!
