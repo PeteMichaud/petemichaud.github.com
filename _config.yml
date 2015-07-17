@@ -1,2 +1,2 @@
-pygments: true
+highlighter: pygments
 root_url: http://petemichaud.github.com
