@@ -1,0 +1,182 @@
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Kaleidoscope - Pete Michaud</title>
+<link rel="alternate" type="application/rss+xml" title="Pete Michaud &raquo; Kaleidoscope Comments Feed" href="http://www.petermichaud.com/software/kaleidoscope/feed/" />
+<link rel='index' title='Pete Michaud' href='http://www.petermichaud.com' />
+<link rel='start' title='Benevolent Sun' href='http://www.petermichaud.com/art/benevolent-sun/' />
+<link rel='prev' title='Hypercube' href='http://www.petermichaud.com/software/hypercube/' />
+<link rel='next' title='Roomba' href='http://www.petermichaud.com/software/roomba/' />
+<link rel="pingback" href="http://www.petermichaud.com/xmlrpc.php" />
+<style type="text/css">
+body{
+	color:#555;
+	padding:0;margin:0;
+	font:normal normal bold 14/16px Tahoma, sans-serif}
+span{position:absolute}
+#window{background:#000}
+#instructions{
+	position:absolute;
+	top:25px;left:25px;
+	display:none;}
+.hover{color:#00f}
+#coming-soon{
+	position:absolute;
+	bottom:25px;right:25px;
+  color:#555;
+  text-decoration:none;
+}
+#coming-soon:hover{
+  color:#00f
+}
+</style>
+<script type="text/javascript" src="http://www.petermichaud.com/wp-includes/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="http://www.petermichaud.com/wp-includes/js/jquery/jquery.mousewheel.min.js"></script>
+<script type="text/javascript">
+
+/*
+ * It's either a Kaleidoscope or a
+ * a living snow flake. Who cares?
+ */
+$ = $ || jQuery;
+$(document).ready(function(){
+
+	//Constants
+	var RADIUS_MAX 	= 600;
+	var RADIUS_MIN 	= 5;
+	var AUTOMOVE_TIMEOUT = 1000;
+	var RENDER_INTERVAL 	= 9;
+
+
+	//Object Variables
+	var radius			= 300;
+	var baseFontSize = radius / 20;
+
+	var a = 0, b = 0;
+
+	var radiusStep = .1;
+
+	var vertCount = 6, shellCount = 4;
+
+	var shells = new Array(shellCount);
+
+	var autoMoveTimer = -1;
+
+	var $window = $('#window');
+	var $instructions = $('#instructions');
+
+	var Sin = Math.sin;
+	var Cos = Math.cos;
+
+	//Functions
+
+	function turnOnAutoMove()
+	{
+		radiusStep = .1;
+	}
+
+	function turnOffAutoMove()
+	{
+		clearTimeout(autoMoveTimer);
+		radiusStep = 0;
+	}
+
+	function init()
+	{
+		$window.text('').height($(document).height() + "px");
+
+		var thisShell = shellCount;
+		var thisVert = vertCount;
+
+		//populate window with verts
+		while (thisShell--)
+		{
+			while (thisVert--)
+				$window.append('<span class="v' + thisVert + ' s' + thisShell + '">&deg;</span>');
+
+			thisVert = vertCount;
+		}
+
+		thisShell = shellCount;
+
+		while(thisShell--)
+			shells[thisShell] = $('span.s' + thisShell);
+	}
+
+	function render()
+	{
+		for(var shellIndex = 0; shellIndex < shellCount; shellIndex++)
+			for (var vertIndex = 0; vertIndex < vertCount; vertIndex++)
+				{
+					g					= Sin( (radius + (shellIndex * 10)) / 15 ) * 11;
+					fSize 		= baseFontSize + Cos( a + vertIndex ) * g;
+					newColor 	= Math.floor(fSize / baseFontSize * 100);
+					if (newColor < 0) newColorc = 0;
+					else if (newColor > 255) newColor = 255;
+
+					with(shells[shellIndex][vertIndex].style)
+					{
+						left			= 50 + Sin( a + vertIndex ) * g + "%";
+						top 			= 50 + Cos( b + vertIndex ) * g + "%";
+						fontSize 	= fSize;
+						color 		= 'rgb(0, 0, ' + newColor + ')';
+					}
+				}
+		radius += radiusStep;
+	}
+
+	//Bind Events
+	$instructions
+		.fadeIn('slow')
+		.hover(
+		function(){
+			$instructions.toggleClass('hover');
+		},
+		function(){
+			$instructions.toggleClass('hover');
+		});
+
+	$window
+		.bind('mousemove',
+		function(e){
+			a = e.clientX / 99;
+			b = e.clientY / 99;
+		})
+		.mousewheel(function(event, delta) {
+
+			turnOffAutoMove();
+
+			radius += delta;
+			if (radius < RADIUS_MIN)
+				radius = RADIUS_MIN;
+			else if (radius > RADIUS_MAX)
+				radius = RADIUS_MAX;
+
+			baseFontSize = radius / 20;
+
+			autoMoveTimer = setTimeout(turnOnAutoMove, AUTOMOVE_TIMEOUT);
+		});
+
+	$(window).resize(function(){
+		$window.height($(document).height() + "px");
+	});
+
+	//Render!
+	init();
+	setInterval(render, RENDER_INTERVAL);
+
+});
+
+</script>
+
+</head>
+<body>
+	<div id="window">
+		Please Enable JavaScript!
+	</div>
+	<div id="instructions">
+		Move your mouse to rotate. Use your mouse wheel to cycle. Use your mind to be beneficent.
+	</div>
+	<a href="/essays/kaleidoscope/" id="coming-soon">&laquo; Back to PeterMichaud.com</a>
+</body>
+</html>

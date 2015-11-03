@@ -14,7 +14,7 @@ exciting, but it just ends up smelling bad after the flailing stops.
 
 I have a few wide areas of interest.
 
-The areas that's gotten the most airtime in my writing is psychology and spirituality. I write mostly about that on [my
+The areas that's gotten the most airtime in my writing is psychology and productivity. I write mostly about that on [my
 blog at PeteMichaud.com](http://www.petermichaud.com), and it's one of my longest running and most popular blogs.
 
 Another major area of interest for me is art. I showcase some of [my artwork at PeteArt.com](http://www.peteart.com).

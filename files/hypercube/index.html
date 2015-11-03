@@ -1,0 +1,181 @@
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Hypercube - Pete Michaud</title>
+<link rel='index' title='Pete Michaud' href='http://www.petermichaud.com' />
+<style type="text/css">
+body{
+	color:#555;
+	padding:0;margin:0;
+	font:normal normal bold 14/16px Tahoma, sans-serif}
+span{position:absolute}
+#window{background:#000}
+#instructions{
+	position:absolute;
+	top:25px;left:25px;
+	display:none;}
+.hover{color:#0f0}
+#coming-soon{
+	position:absolute;
+	bottom:25px;right:25px;
+  color:#555;
+  text-decoration:none;
+}
+#coming-soon:hover{
+  color:#0f0
+}
+</style>
+<script type="text/javascript" src="http://www.petermichaud.com/wp-includes/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="http://www.petermichaud.com/wp-includes/js/jquery/jquery.mousewheel.min.js"></script>
+<script type="text/javascript">
+
+/*
+ * Rotating and Zooming 3D javascript grid.
+ * I'd like to thank Thiemo for the concept,
+ * which I built upon. Check out his site:
+ * http://maettig.com/
+ */
+
+$ = $ || jQuery;
+
+$(document).ready(function(){
+
+	//Constants
+	var VERT_SPACING_MAX 	= 100;
+	var VERT_SPACING_MIN 	= 5;
+	var RENDER_INTERVAL 	= 9;
+
+	//Object Variables
+	var dimension = 1;
+	var a = 0, b = 0;
+	var x = 0, y = 0, z = 0;
+
+	var vertSpacing  = 50;
+	var vertSize = getVertSize();
+
+	var vertCount = 27;
+	var $window = $('#window');
+	$window.text('').height($(document).height() + "px");
+
+	//populate window with verts
+	while (vertCount--)
+		$window.append('<span id="l' + vertCount + '">&deg;</span>');
+
+	var $verts = $('span');
+	var $instructions = $('#instructions');
+
+	//Functions
+	function hCenterOfWindow()
+	{
+		return $window.offset().left + ($window.width() / 2);
+	}
+
+	function vCenterOfWindow()
+	{
+		return $window.offset().top + ($window.height() / 2);
+	}
+
+	function getVertSize()
+	{
+		return vertSpacing / 3.125;
+	}
+
+	var hCenter = hCenterOfWindow();
+	var vCenter = vCenterOfWindow();
+
+	function render()
+	{
+		vertIndex = 0;
+		for (x =- dimension; x <= dimension; x += dimension)
+		{
+			for (y =- dimension; y <= dimension; y += dimension)
+			{
+				for (z =- dimension; z <= dimension; z += dimension)
+				{
+					u = x;
+					v = y;
+					w = z;
+
+					u2 = u * Math.cos(a) - v * Math.sin(a);
+					v2 = u * Math.sin(a) + v * Math.cos(a);
+					w2 = w;
+
+					u = u2;
+					v = v2;
+					w = w2;
+
+					u2 = u;
+					v2 = v * Math.cos(b) - w * Math.sin(b);
+					w2 = v * Math.sin(b) + w * Math.cos(b);
+
+					u = u2;
+					v = v2;
+					w = w2;
+
+					var c = Math.round((w + 2) * 70);
+					if (c < 0) c = 0;
+					if (c > 255) c = 255;
+
+					with ($verts[vertIndex].style)
+					{
+						left = hCenter + u * (w + 2) * vertSpacing;
+						top  = vCenter + v * (w + 2) * vertSpacing;
+						color = 'rgb(0, ' + c + ', 0)';
+						fontSize = (w + 2) * vertSize + "px";
+					}
+					vertIndex++;
+				}
+			}
+		}
+	}
+
+	//Render!
+	setInterval(render, RENDER_INTERVAL);
+	$instructions
+		.fadeIn('slow')
+		.hover(
+		function(){
+			$instructions.toggleClass('hover');
+		},
+		function(){
+			$instructions.toggleClass('hover');
+		});
+
+	//Bind Events
+	$window
+		.bind('mousemove',
+		function(e){
+			a = e.clientX / 99;
+			b = e.clientY / 99;
+		})
+		.mousewheel(function(event, delta) {
+			vertSpacing += delta;
+			if (vertSpacing < VERT_SPACING_MIN)
+				vertSpacing = VERT_SPACING_MIN;
+			else if (vertSpacing > VERT_SPACING_MAX)
+				vertSpacing = VERT_SPACING_MAX;
+
+				vertSize	= getVertSize();
+		});
+
+	$(window).resize(function(){
+		hCenter = hCenterOfWindow();
+		vCenter = vCenterOfWindow();
+		$window.height($(document).height() + "px");
+	});
+
+});
+
+</script>
+
+</head>
+<body>
+	<div id="window">
+		Please Enable JavaScript!
+	</div>
+	<div id="instructions">
+		Move your mouse to rotate the cube. Use your mouse wheel to zoom. Use your heart to be joyful.
+	</div>
+	<a href="/essays/hypercube/" id="coming-soon">&laquo; Back to PeterMichaud.com</a>
+</body>
+</html>

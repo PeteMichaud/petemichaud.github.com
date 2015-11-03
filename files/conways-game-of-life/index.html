@@ -1,0 +1,326 @@
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Conway's Game of Life - Pete Michaud</title>
+<link rel='index' title='Pete Michaud' href='http://www.petermichaud.com' />
+
+<style type="text/css">
+body{
+	color:#ffae00;
+	padding:0;margin:0;text-align:center;
+	font:normal normal bold 14/16px Tahoma, sans-serif;
+	background:#004fba url(images/back.jpg);
+	background-repeat:repeat-x;
+	background-position:top center;}
+#window{
+	background-image:url(images/windowBack.png);
+	margin:20px auto;}
+	#window div{
+		float:left;
+		height:10px;width:10px;
+		margin:0;padding:0;}
+#instructions{
+	text-align:center;
+	margin:20px;
+	display:none;}
+#title{
+	height:0;width:456px;
+	padding:72px 0 0 0;margin:25px auto;
+	overflow:hidden;
+	/*position:absolute;
+	bottom:25px;left:50%;*/
+	background-image:url('images/title.gif');
+	background-repeat:no-repeat;
+}
+div.alive{background-image:url(images/life.png)}
+.hover{color:#fff;}
+.hover-life{background-image:url(images/windowBack.png);cursor:pointer;}
+fieldset{
+  width:50%;border:0;margin:0 auto;
+  text-align:center;
+}
+#btnStop{display:none;}
+a{
+  color:#ffae00;
+  font-size:1.5em;line-height:2em;
+  text-decoration:none;
+}
+
+div#extra-options{
+  display:none;
+  border:1px dotted #ffae00;
+  margin:10px auto;padding:10px;
+  width:250px;
+}
+div#extra-options input{
+  width:100px;
+  float:left;
+  text-align:center;
+  border:1px solid #ffae00;
+}
+div#extra-options label{
+  width:100px;
+  float:left;
+}
+
+
+</style>
+<script type="text/javascript" src="http://www.petermichaud.com/wp-includes/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="http://www.petermichaud.com/wp-includes/js/jquery/jquery.mousewheel.min.js"></script>
+
+<script type="text/javascript">
+
+
+/*
+ * Conway's Game of Life
+
+   1. Any live cell with fewer than two live neighbours dies, as if by loneliness.
+   2. Any live cell with more than three live neighbours dies, as if by overcrowding.
+   3. Any live cell with two or three live neighbours lives, unchanged, to the next generation.
+   4. Any dead cell with exactly three live neighbours comes to life.
+
+ */
+
+$ = $ || jQuery;
+$(document).ready(function(){
+
+	var _this = this;
+
+	_this._BuildMap = function(x, y)
+	{
+		_this._worldX = x;
+		_this._worldY = y;
+
+		_this.$window.text('')
+			.height	(y * _this._cellSize)
+			.width	(x * _this._cellSize);
+
+		_this._map = new Array(x * y);
+
+		$('div',_this.$window).remove();
+
+		//populate window with cells
+		for(var i = 0, cnt = _this._map.length; i < cnt; i++)
+				$('<div id="' + i + '"></div>').appendTo(_this.$window);
+
+		_this.$cells = $('div', _this.$window);
+
+		_this.$cells.click(function()
+		{
+			$(this).toggleClass('alive');
+			_this._map[$(this).attr('id')] = $(this).hasClass('alive') ? 1 : 0;
+		})
+		.hover(function(){
+      if(!$(this).hasClass('alive'))
+      {
+        $(this).addClass('hover-life');
+      }
+		},
+		function(){
+      $(this).removeClass('hover-life');
+		});
+	}
+
+	_this._generation = 0;
+
+	_this._speedMin 	= 500;
+	_this._speedMax 	= 1000;
+	_this._speed = _this._speedMin;
+
+	_this._worldX = $('#txtW').val();
+	_this._worldY = $('#txtH').val();
+
+	_this._cellSize = 10;
+
+	_this.$window = $('#window');
+
+	_this._BuildMap(_this._worldX, _this._worldY);
+
+	_this.$instructions = $('#instructions');
+	_this.$lblGeneration = $('#lblGeneration');
+
+	//Functions
+	_this._GetLiveNeighborCount = function (index, adj)
+	{
+		var living	= 0;
+    var map  		= _this.$cells;
+    adj   			= adj || _this._FindAdjacent(index);
+
+		for(var i = 0, cnt = adj.length; i < cnt; i++)
+				if ($(map[adj[i]]).hasClass('alive'))
+						living++;
+
+		return living;
+	}
+
+	_this._FindAdjacent = function (index)
+    {
+        var adjacent    = [];
+        var ai          = 0;
+				var width       = _this._worldX;
+				var mapLen      = _this._map.length;
+
+        //l[eft]edge and r[ight]edge vars track whether the given
+        //index is on the right or left edge of the field
+        var ledge       = index % width == 0;
+        var redge       = ledge ? false : (parseInt(index)+1) % width == 0;
+
+        var start_adjustment = 1;
+        var end_adjustment = 2;
+
+        if (ledge)
+            start_adjustment = 0;
+        else if (redge)
+            end_adjustment = 1;
+
+        for(var i = index-width-start_adjustment, cnt = parseInt(index-width)+parseInt(end_adjustment); i < cnt; i++)
+            if (i > 0 && i < mapLen)
+                adjacent[ai++] = i;
+
+        for(var i = index-start_adjustment, cnt = parseInt(index) + parseInt(end_adjustment); i < cnt; i++)
+            if (i > 0 && i < mapLen && i != index)
+                adjacent[ai++] = i;
+
+        for(var i = parseInt(index)+parseInt(width-start_adjustment), cnt = parseInt(index)+parseInt(width)+parseInt(end_adjustment); i < cnt; i++)
+            if (i > 0 && i < mapLen)
+                adjacent[ai++] = i;
+
+        return adjacent;
+    }
+
+	var cnt =  _this._map.length;
+	_this._render = function()
+	{
+		for(var i = 0; i < cnt; i++)
+		{
+				switch(_this._GetLiveNeighborCount(i))
+				{
+					case 0:
+					case 1:
+						_this._map[i] = 0;
+						break;
+					case 2:
+						//do nothing
+						break;
+					case 3:
+						_this._map[i] = 1;
+						break;
+					default:
+						_this._map[i] = 0;
+				}
+		}
+		_this.$lblGeneration.text(_this._getGenChar(++_this._generation));
+
+		_this._SetCells();
+
+		renderTimeout = setTimeout(_this._render, _this._speed);
+	}
+
+	_this._getGenChar = function(gen)
+	{
+    var chars = ['/','-','\\','|'];
+    return chars[(4+gen) % 4];
+	}
+
+	_this._SetCells = function()
+	{
+		_this.$cells.removeClass('alive');
+		for(var i = 0; i < cnt; i++)
+			if (_this._map[i] == 1)
+				$(_this.$cells[i]).addClass('alive');
+	}
+
+
+	var renderTimeout = -1;
+
+	$('#btnGo').click(function(){
+		renderTimeout = setTimeout(_this._render, _this._speed);
+		$("#btnStop").show();
+		$("#btnGo").hide();
+		return false;
+	});
+
+	$('#btnStop').click(function(){
+		clearTimeout(renderTimeout);
+		$('#lblGeneration').text("");
+		$("#btnGo").show();
+		$("#btnStop").hide();
+		return false;
+	});
+
+	$('#btnOptions').click(function(){
+		$('#extra-options').slideToggle();
+		return false;
+	});
+
+
+	_this.$instructions
+		.fadeIn('slow')
+		.hover(
+		function(){
+			$(this).toggleClass('hover');
+		},
+		function(){
+			$(this).toggleClass('hover');
+		});
+
+	//Bind Events
+	_this.$window
+		.mousewheel(function(event, delta) {
+			_this._speed += delta;
+			if (_this._speed < _this._speedMin)
+				_this._speed = _this._speedMin;
+			else if (_this._speed > _this._speedMax)
+				_this._speed = _this._speedMax;
+		});
+
+	$('#btnRedraw').click(function(){
+		var newW = parseInt($('#txtW').val());
+		var newH = parseInt($('#txtH').val());
+
+		if (isNaN(newW) || isNaN(newH))
+			alert('Only integers work for the width and height!');
+		else
+		{
+			if(newW * newH > 1999)
+				if (!confirm('Setting the environment to be this large may cause your system to slow down or your browser to crash. Are you sure you want to make it this large?'))
+					return;
+
+			_this._BuildMap(newW, newH);
+		}
+
+		return false;
+	});
+});
+
+</script>
+
+</head>
+<body>
+	<div id="instructions">
+		Click on the semi-transparent white area to set initial cells. Use your mouse wheel to adjust speed. Love yourself and those around you.
+	</div>
+
+	<div id="window">
+		Please Enable JavaScript!
+	</div>
+
+	<fieldset>
+    <span id="lblGeneration"></span>
+		<a href="#" id="btnGo">Play!</a>
+		<a href="#" id="btnStop">Stop!</a>
+		<br />
+		<a href="#" id="btnOptions">Options &raquo;</a>
+		<div id="extra-options">
+      <label for="txtW">Width:</label> <input type="text" name="txtW" id="txtW" value="40" />
+      <br />
+      <label for="txtH">Height:</label> <input type="text" name="txtH" id="txtH" value="40" />
+      <br />
+      <a href="#" id="btnRedraw">Redraw Environment</a>
+    </div>
+	</fieldset>
+
+
+	<div id="title">Pete Michaud presents Conway's Game of Life</div>
+</body>
+</html>
